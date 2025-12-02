@@ -5,14 +5,8 @@ public static class ApplicationBuilderExtension
     public static IApplicationBuilder UseDatabaseMigration(this IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.CreateScope();
-
-        var contextFactory = serviceScope.ServiceProvider.GetService<IDbContextFactory<MovieReservationContext>>()!;
-        
-        using (var context = contextFactory.CreateDbContext())
-        {
-            context.Database.EnsureCreated();
-        }
-
+        var context = serviceScope.ServiceProvider.GetService<MovieReservationContext>()!;
+        context.Database.Migrate();
         return app;
     }
     

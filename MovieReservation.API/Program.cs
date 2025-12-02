@@ -30,9 +30,8 @@ builder
     .AddSwagger();
    // .AddAuthentication();
 
+builder.Services.AddEndpointsApiExplorer();   
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -45,7 +44,11 @@ app.UseMiddlewares();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Reservation API v1");
+    options.RoutePrefix = string.Empty; // serves Swagger at root '/'
+});
 }
 
 app.MapHealthChecks("/health");
