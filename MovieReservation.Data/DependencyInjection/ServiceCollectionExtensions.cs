@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
             throw new ArgumentNullException(nameof(connectionString));
         }
         
-        services.AddDbContext<MovieReservationContext>(options => options.UseNpgsql(connectionString));
+        services.AddDbContext<MovieReservationContext>(options => options.UseNpgsql(connectionString).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
         
         services.AddScoped<IRepository<Guid, Movie>, BaseRepository<Movie>>();
         services.AddScoped<IRepository<Guid, MovieGenre>, BaseRepository<MovieGenre>>();
