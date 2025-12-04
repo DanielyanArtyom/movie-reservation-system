@@ -27,8 +27,8 @@ builder
     .AddLogger()
     .AddWebApi()
     .AddMapper()
-    .AddSwagger();
-   // .AddAuthentication();
+    .AddSwagger()
+    .AddAuthentication();
 
 builder.Services.AddEndpointsApiExplorer();   
 builder.Services.AddControllers();
@@ -56,5 +56,9 @@ app.MapHealthChecks("/health");
 app.UseDatabaseMigration();
 
 app.MapControllers();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();

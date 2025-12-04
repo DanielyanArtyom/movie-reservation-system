@@ -7,8 +7,26 @@ public class ValidationVisitor: IVisitor
         Validate(request);
     }
     
-    private void Validate(object request)
+    private void Validate(UserModel request)
     {
-        throw new ArgumentException("Parent Id is required");
+        if (request == null)
+        {
+            throw new ArgumentException("User could not be empty");
+        }
+        
+        if (string.IsNullOrWhiteSpace(request.Email))
+        {
+            throw new ArgumentException("Login could not be empty.");
+        }
+        
+        if (string.IsNullOrWhiteSpace(request.Name))
+        {
+            throw new ArgumentException("Name could not be empty.");
+        }
+        
+        if (string.IsNullOrWhiteSpace(request.Password))
+        {
+            throw new ArgumentException("Password could not be empty.");
+        }
     }
 }

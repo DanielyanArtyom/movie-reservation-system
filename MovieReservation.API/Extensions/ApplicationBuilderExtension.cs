@@ -14,6 +14,7 @@ public static class ApplicationBuilderExtension
     {
         builder.UseMiddleware<ExceptionMiddleware>();
         builder.UseMiddleware<SerilogMiddleware>();
+        builder.UseMiddleware<TotalMoviesHeaderMiddleware>();
 
         return builder;
     }

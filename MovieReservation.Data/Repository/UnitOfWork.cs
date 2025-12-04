@@ -9,7 +9,7 @@ public class UnitOfWork: IUnitOfWork
     public IRepository<Guid, Room> Rooms { get; }
     public IRepository<Guid, Session> Sessions { get; }
     public IRepository<Guid, Ticket> Tickets { get; }
-    public IRepository<Guid, User> Users { get; }
+    public IUserRepository Users { get; }
     public IRepository<Guid, Permission> Permissions { get; }
     public IRepository<Guid, UserRole> UserRoles { get; }
     public IRepository<Guid, Role> Roles { get; }
@@ -21,11 +21,10 @@ public class UnitOfWork: IUnitOfWork
         IRepository<Guid, Room> roomsRepository,
         IRepository<Guid, Session> sessionsRepository,
         IRepository<Guid, Ticket> ticketsRepository,
-        IRepository<Guid, User> usersRepository,
+        IUserRepository usersRepository,
         IRepository<Guid, Permission> permissionsRepository,
         IRepository<Guid, UserRole> userRolesRepository,
-        IRepository<Guid, Role> rolesRepository
-        )
+        IRepository<Guid, Role> rolesRepository)
     {
         _context = context;
         Movies = moviesRepository;

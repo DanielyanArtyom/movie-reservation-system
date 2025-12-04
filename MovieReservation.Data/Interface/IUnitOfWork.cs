@@ -7,7 +7,7 @@ public interface IUnitOfWork
     IRepository<Guid, Room> Rooms { get; }
     IRepository<Guid, Session> Sessions { get; }
     IRepository<Guid, Ticket> Tickets { get; }
-    IRepository<Guid, User> Users { get; }
+    public IUserRepository Users { get; }
     IRepository<Guid, Permission> Permissions { get; }
     IRepository<Guid, UserRole> UserRoles { get; }
 

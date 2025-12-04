@@ -4,7 +4,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMovieReservationServices(this IServiceCollection services)
     {
-       // services.AddSingleton<IFileService, FileService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IJwtService, JwtService>();
+        
         return services;
     }
 }

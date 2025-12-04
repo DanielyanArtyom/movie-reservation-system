@@ -4,6 +4,6 @@ public sealed class EntitiesToModelMapping : Profile
 {
     public EntitiesToModelMapping()
     {
-        //CreateMap<Publisher, PublisherModel>().ReverseMap();
+        CreateMap<User, UserModel>().ReverseMap();
     }
 }
