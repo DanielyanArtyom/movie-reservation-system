@@ -29,4 +29,22 @@ public class ValidationVisitor: IVisitor
             throw new ArgumentException("Password could not be empty.");
         }
     }
+    
+    private void Validate(Role request)
+    {
+        if (request == null)
+        {
+            throw new ArgumentException("User could not be empty");
+        }
+        
+        if (string.IsNullOrWhiteSpace(request.Name))
+        {
+            throw new ArgumentException("Name could not be empty.");
+        }
+        
+        if (request.Permissions == null)
+        {
+            throw new ArgumentException("Permissions could not be empty.");
+        }
+    }
 }

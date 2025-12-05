@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IJwtService, JwtService>();
-        
+        services.AddScoped<IPredefinedDataSetsProvider, PredefinedDataSetsProvider>();
         return services;
     }
 }

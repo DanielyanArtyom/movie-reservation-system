@@ -7,6 +7,6 @@ public class UserModel: BaseModel
     public string Email { get; set; } = default!;
     public string Password { get; set; } = default!;
 
-    public List<UserRole> UserRoles { get; set; } = new();
+    public List<Role> Roles { get; set; }
     public List<Ticket> Tickets { get; set; } = new();
 }

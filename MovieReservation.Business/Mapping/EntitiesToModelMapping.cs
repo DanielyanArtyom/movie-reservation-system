@@ -5,5 +5,7 @@ public sealed class EntitiesToModelMapping : Profile
     public EntitiesToModelMapping()
     {
         CreateMap<User, UserModel>().ReverseMap();
+        CreateMap<Role, RoleModel>().ReverseMap();
+        CreateMap<Permission, PermissionModel>().ReverseMap();
     }
 }

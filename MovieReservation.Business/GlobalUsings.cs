@@ -2,6 +2,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using System.ComponentModel.DataAnnotations;
 global using AutoMapper;
 global using Microsoft.AspNetCore.Http;
+global using System.Linq.Expressions;
 
 global using MovieReservation.Data.Context.Entity;
 global using MovieReservation.Business.Mapping;
@@ -13,3 +14,5 @@ global using MovieReservation.Data.Interface;
 global using MovieReservation.Data.Search;
 global using MovieReservation.Data.Enum;
 global using MovieReservation.Business.Service;
+global using MovieReservation.Business.Enum;
+global using MovieReservation.Business.Extensions;
