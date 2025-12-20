@@ -30,7 +30,7 @@ public class ValidationVisitor: IVisitor
         }
     }
     
-    private void Validate(Role request)
+    private void Validate(RoleModel request)
     {
         if (request == null)
         {
@@ -45,6 +45,24 @@ public class ValidationVisitor: IVisitor
         if (request.Permissions == null)
         {
             throw new ArgumentException("Permissions could not be empty.");
+        }
+    }
+    
+    private void Validate(GenreModel request)
+    {
+        if (request == null)
+        {
+            throw new ArgumentException("User could not be empty");
+        }
+        
+        if (string.IsNullOrWhiteSpace(request.Name))
+        {
+            throw new ArgumentException("Name could not be empty.");
+        }
+        
+        if (string.IsNullOrWhiteSpace(request.Description))
+        {
+            throw new ArgumentException("Description could not be empty.");
         }
     }
 }

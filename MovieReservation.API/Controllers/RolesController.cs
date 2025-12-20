@@ -1,5 +1,3 @@
-
-
 namespace MovieReservation.API.Controllers;
 
 [Route("api/[controller]")]
@@ -24,7 +22,7 @@ public class RolesController: ControllerBase
         _predefinedDataSetsProvider = predefinedDataSetsProvider;
     }
     
-     [HttpGet]
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RoleDto>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetALlRoles()

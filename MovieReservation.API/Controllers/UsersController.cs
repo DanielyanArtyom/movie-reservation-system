@@ -116,8 +116,7 @@ public class UsersController: ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetRolesByUserId(Guid id)
     {
-       // await _roleService.GetRolesByUser(id);
-       await Task.Delay(10);
-        return Ok();
+        var roles = await _roleService.GetRolesByUser(id);
+        return Ok(_mapper.Map<List<RoleDto>>(roles));
     }
 }

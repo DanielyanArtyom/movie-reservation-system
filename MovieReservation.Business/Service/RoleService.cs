@@ -2,7 +2,7 @@ namespace MovieReservation.Business.Service;
 
 public class RoleService: IRoleService
 {
-   private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IVisitor _visitor;
     
@@ -38,7 +38,7 @@ public class RoleService: IRoleService
         
         var role = (await _unitOfWork.Roles.SearchAsync(new SearchContext<Role>
         {
-            Filter = x => x.Name == request.Name
+            Filter = x => x.Id == request.Id || x.Name == request.Name
         }, ct)).Results.FirstOrDefault();
         
         if (role == null)

@@ -23,7 +23,11 @@ public class DTOtoModelMapping : Profile
                     opt => opt.MapFrom(src => src.Roles.Select(genreId => new RoleModel { Id = genreId })));
 
             CreateMap<RoleModel, RoleDto>();
-        #endregion
-       
+            CreateMap<GenreRequest, GenreModel>();
+            CreateMap<GenreModel, GenreResponse>();
+
+
+            #endregion
+
     }
 }
