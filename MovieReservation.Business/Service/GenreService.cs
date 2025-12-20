@@ -45,8 +45,12 @@ public class GenreService: IGenreService
         {
             throw new NotFoundException("Role is not found");
         }
+
+        var newGenre = _mapper.Map<MovieGenre>(request);
         
-        _unitOfWork.MovieGenres.Add(_mapper.Map<MovieGenre>(request));
+        newGenre.UpdatedAt = DateTime.UtcNow;
+        
+        _unitOfWork.MovieGenres.Update(newGenre.Id, newGenre);
 
         await _unitOfWork.CompleteAsync(ct);
     }

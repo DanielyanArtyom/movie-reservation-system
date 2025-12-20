@@ -52,12 +52,30 @@ public class ValidationVisitor: IVisitor
     {
         if (request == null)
         {
-            throw new ArgumentException("User could not be empty");
+            throw new ArgumentException("Genre could not be empty");
         }
         
         if (string.IsNullOrWhiteSpace(request.Name))
         {
             throw new ArgumentException("Name could not be empty.");
+        }
+        
+        if (string.IsNullOrWhiteSpace(request.Description))
+        {
+            throw new ArgumentException("Description could not be empty.");
+        }
+    }
+    
+    private void Validate(MovieModel request)
+    {
+        if (request == null)
+        {
+            throw new ArgumentException("Movie could not be empty");
+        }
+        
+        if (string.IsNullOrWhiteSpace(request.Title))
+        {
+            throw new ArgumentException("Title could not be empty.");
         }
         
         if (string.IsNullOrWhiteSpace(request.Description))

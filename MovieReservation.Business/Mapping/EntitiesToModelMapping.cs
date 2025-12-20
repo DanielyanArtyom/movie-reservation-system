@@ -8,5 +8,6 @@ public sealed class EntitiesToModelMapping : Profile
         CreateMap<Role, RoleModel>().ReverseMap();
         CreateMap<Permission, PermissionModel>().ReverseMap();
         CreateMap<GenreModel, MovieGenre>().ReverseMap();
+        CreateMap<MovieModel, Movie>().ReverseMap();
     }
 }

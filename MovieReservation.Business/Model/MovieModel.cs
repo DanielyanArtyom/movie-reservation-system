@@ -1,12 +1,12 @@
-namespace MovieReservation.Data.Context.Entity;
+namespace MovieReservation.Business.Model;
 
-public class Movie: BaseEntity
+public class MovieModel: BaseModel
 {
     public required string Title { get; set; } = default!;
     public required string Description { get; set; } = default!;
     public string ImageUrl { get; set; } = default!;
         
-    public required TimeSpan Duration { get; set; }
+    public required TimeSpan Duration { get; set; } = TimeSpan.Zero;
 
     public required Guid GenreId { get; set; }
     public MovieGenre Genre { get; set; } = default!;

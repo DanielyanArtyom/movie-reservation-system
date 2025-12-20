@@ -54,8 +54,12 @@ public class UserService: IUserService
         }
 
         request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        
+        var newUser = _mapper.Map<User>(request);
+        
+        newUser.UpdatedAt = DateTime.UtcNow;
 
-        _unitOfWork.Users.Update(request.Id, _mapper.Map<User>(request));
+        _unitOfWork.Users.Update(request.Id, newUser);
 
         await _unitOfWork.CompleteAsync(ct);
     }

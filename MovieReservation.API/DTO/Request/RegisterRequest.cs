@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace MovieReservation.API.DTO.Request;
 
 public class RegisterRequest

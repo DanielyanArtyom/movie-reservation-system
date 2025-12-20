@@ -1,14 +1,9 @@
-using AutoMapper;
-using MovieReservation.API.DTO.Request;
-using MovieReservation.Business.Model;
-
 namespace MovieReservation.API.Mapping;
 
 public class DTOtoModelMapping : Profile
 {
     public DTOtoModelMapping()
     {
-        #region Users Mapping
             CreateMap<LoginRequest, UserModel>();
             CreateMap<AuthorizationModel, AuthorizationDto>();
             CreateMap<RegisterRequest, UserModel>();
@@ -26,8 +21,6 @@ public class DTOtoModelMapping : Profile
             CreateMap<GenreRequest, GenreModel>();
             CreateMap<GenreModel, GenreResponse>();
 
-
-            #endregion
-
+            CreateMap<MovieCreateRequest, MovieModel>();
     }
 }

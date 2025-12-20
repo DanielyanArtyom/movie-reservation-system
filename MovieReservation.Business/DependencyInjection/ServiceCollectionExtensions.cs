@@ -10,6 +10,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IPredefinedDataSetsProvider, PredefinedDataSetsProvider>();
         services.AddScoped<IGenreService, GenreService>();
+        services.AddScoped<IMovieService, MovieService>();
         
         return services;
     }

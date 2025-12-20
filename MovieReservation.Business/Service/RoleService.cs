@@ -46,7 +46,10 @@ public class RoleService: IRoleService
             throw new NotFoundException("Role is not found");
         }
         
-        _unitOfWork.Roles.Add(_mapper.Map<Role>(request));
+        var newRole = _mapper.Map<Role>(request);
+        newRole.UpdatedAt = DateTime.UtcNow;
+        
+        _unitOfWork.Roles.Update(newRole.Id, newRole);
 
         await _unitOfWork.CompleteAsync(ct);
     }
