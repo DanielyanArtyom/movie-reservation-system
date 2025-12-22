@@ -7,6 +7,8 @@ public class SessionConfiguration : IEntityTypeConfiguration<Session>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.ShowTime).IsRequired();
+        builder.Property(x => x.EndTime).IsRequired();
+        
         builder.Property(x => x.Status).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
 

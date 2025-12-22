@@ -1,13 +1,16 @@
 namespace MovieReservation.API.DTO.Request;
 
-public class SessionCreateFromMovieRequest
+public class SessionCreateRequest
 {
     [Required]
-    public DateTime ShowTime { get; set; }
+    public required DateTime ShowTime { get; set; }
     
     [Required]
-    public SessionStatusEnum Status { get; set; } = SessionStatusEnum.Scheduled;
+    public required SessionStatusEnum Status { get; set; } = SessionStatusEnum.Scheduled;
     
     [Required]
-    public Guid RoomId { get; set; }
+    public required Guid RoomId { get; set; }
+    
+    [Required]
+    public required Guid MovieId { get; set; }
 }

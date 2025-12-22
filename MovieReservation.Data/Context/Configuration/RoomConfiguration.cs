@@ -16,7 +16,7 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
             {
                 Id = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1"),
                 Name = "Room A",
-                AvailableSeats = 50,
+                AvailableSeats = AvailableSeatsEnum.Medium,
                 HasFreeSeats = true,
                 CreatedAt = DateTime.UtcNow
             },
@@ -24,7 +24,7 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
             {
                 Id = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb2"),
                 Name = "Room B",
-                AvailableSeats = 80,
+                AvailableSeats = AvailableSeatsEnum.Large,
                 HasFreeSeats = true,
                 CreatedAt = DateTime.UtcNow
             }

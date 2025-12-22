@@ -22,5 +22,12 @@ public class DTOtoModelMapping : Profile
             CreateMap<GenreModel, GenreResponse>();
 
             CreateMap<MovieCreateRequest, MovieModel>();
+            CreateMap<MovieUpdateRequest, MovieModel>();
+            CreateMap<MovieModel, MovieDto>();
+            CreateMap<RoomModel, RoomDto>();
+            CreateMap<TicketModel, TicketDto>();
+            CreateMap<SessionModel, SessionDto>();
+            CreateMap<SessionCreateRequest, SessionModel>();
+            
     }
 }

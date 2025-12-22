@@ -3,14 +3,12 @@ namespace MovieReservation.Business.Service;
 public class MovieService: IMovieService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IGenreService _genreService;
     private readonly IMapper _mapper;
     private readonly IVisitor _visitor;
     
-    public MovieService(IUnitOfWork unitOfWork, IGenreService genreService,IVisitor visitor,IMapper mapper)
+    public MovieService(IUnitOfWork unitOfWork ,IVisitor visitor,IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _genreService = genreService;
         _mapper = mapper;
         _visitor = visitor;
     }

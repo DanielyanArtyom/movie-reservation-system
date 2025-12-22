@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.Features;
+
 namespace MovieReservation.Business.DependencyInjection;
 
 public static class ServiceCollectionExtensions
@@ -11,6 +13,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPredefinedDataSetsProvider, PredefinedDataSetsProvider>();
         services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IMovieService, MovieService>();
+
+        services.AddScoped<ISessionService, SessionService>();
+        services.AddScoped<ITicketService, TicketService>();
         
         return services;
     }

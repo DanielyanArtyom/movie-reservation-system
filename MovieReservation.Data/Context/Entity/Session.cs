@@ -3,6 +3,7 @@ namespace MovieReservation.Data.Context.Entity;
 public class Session: BaseEntity
 {
     public DateTime ShowTime { get; set; }
+    public DateTime EndTime { get; set; }
     public SessionStatusEnum Status { get; set; } = SessionStatusEnum.Scheduled;
     
     public Guid MovieId { get; set; }
