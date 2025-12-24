@@ -1,8 +1,11 @@
+using Microsoft.EntityFrameworkCore.Storage;
+
 namespace MovieReservation.Data.Repository;
 
 public class UnitOfWork: IUnitOfWork
 {
     private readonly MovieReservationContext _context;
+    private IDbContextTransaction? _transaction;
     
     public IRepository<Guid, Movie> Movies { get; }
     public IRepository<Guid, MovieGenre> MovieGenres { get; }
@@ -41,6 +44,34 @@ public class UnitOfWork: IUnitOfWork
     public Task CompleteAsync(CancellationToken ct = default)
     {
         return _context.SaveChangesAsync(ct);
+    }
+
+    public async Task BeginTransactionAsync(CancellationToken ct = default)
+    {
+        if (_transaction == null)
+            _transaction = await _context.Database.BeginTransactionAsync(ct);
+    }
+
+    public async Task CommitAsync(CancellationToken ct = default)
+    {
+        await _context.SaveChangesAsync(ct);
+
+        if (_transaction != null)
+        {
+            await _transaction.CommitAsync(ct);
+            await _transaction.DisposeAsync();
+            _transaction = null;
+        }
+    }
+
+    public async Task RollbackAsync(CancellationToken ct = default)
+    {
+        if (_transaction != null)
+        {
+            await _transaction.RollbackAsync(ct);
+            await _transaction.DisposeAsync();
+            _transaction = null;
+        }
     }
 
     public void Dispose()

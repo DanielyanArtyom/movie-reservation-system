@@ -8,7 +8,7 @@ namespace MovieReservation.API.Controllers;
 [ApiController]
 [Authorize(
     AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, 
-    Roles = AuthorizationConstants.RoleAdministrator, 
+    Roles = AuthorizationConstants.RoleUser, 
     Policy = AuthorizationConstants.WritePermissionsPolicy)]
 public class UsersController: ControllerBase
 {
@@ -70,7 +70,6 @@ public class UsersController: ControllerBase
     }
     
     [HttpPost("access")]
-    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CheckAccesses([FromBody] CheckAccessRequest request)

@@ -22,15 +22,12 @@ public class SessionService: ISessionService
         _visitor.Visit(request);
 
         var movie = await _movieService.GetByIdAsync(request.MovieId, ct);
+        
         if (movie == null)
             throw new NotFoundException("Movie does not exist.");
 
-        if (movie.Duration <= TimeSpan.Zero)
-            throw new ArgumentException("Movie duration is invalid.");
-
         var endTime = request.ShowTime.Add(movie.Duration);
 
-        // 4. Check room availability (time overlap)
         var overlappingSessionsCount =
             await _unitOfWork.Sessions.GetFilteredCountAsync(
                 s =>
@@ -56,33 +53,90 @@ public class SessionService: ISessionService
         await _unitOfWork.CompleteAsync(ct);
     }
 
-    public Task UpdateAsync(SessionModel request, CancellationToken ct = default)
+    public async Task UpdateAsync(SessionModel request, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        _visitor.Visit(request);
+        
+        var session = (await _unitOfWork.Sessions.SearchAsync(new SearchContext<Session>
+        {
+            Filter = x => x.Id == request.Id
+        }, ct)).Results.FirstOrDefault();
+        
+        if (session == null)
+            throw new NotFoundException("Role is not found");
+        
+        var movie = await _movieService.GetByIdAsync(request.MovieId, ct);
+        
+        var endTime = request.ShowTime.Add(movie.Duration);
+
+        var overlappingSessionsCount =
+            await _unitOfWork.Sessions.GetFilteredCountAsync(
+                s =>
+                    s.RoomId == request.RoomId &&
+                    s.Status != SessionStatusEnum.Cancelled &&
+                    s.ShowTime < endTime &&
+                    s.EndTime > request.ShowTime,
+                ct);
+
+        if (overlappingSessionsCount > 0)
+            throw new BusinessException("Room is already booked for the selected time slot.");
+
+        var updatedSession = _mapper.Map<Session>(request);
+        
+        updatedSession.EndTime = endTime;
+        
+        _unitOfWork.Sessions.Update(request.Id, updatedSession);
+        
+        await _ticketService.GenerateTicketsAsync(request, ct);
+
+        await _unitOfWork.CompleteAsync(ct);
     }
 
-    public Task<SessionModel> GetByIdAsync(Guid id, CancellationToken ct = default)
+    public async Task<SessionModel> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var session = await _unitOfWork.Sessions.GetByIdAsync(id, ct);
+        
+        return _mapper.Map<SessionModel>(session);
     }
 
-    public Task<List<SessionModel>> GetAllAsync()
+    public async Task<List<SessionModel>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var sessions = await _unitOfWork.Sessions.SearchAsync(new SearchContext<Session>());
+        
+        return _mapper.Map<List<SessionModel>>(sessions.Results);
     }
 
-    public Task DeleteAsync(Guid id, CancellationToken ct = default)
+    public async Task DeleteAsync(Guid id, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var session = await _unitOfWork.Sessions.GetByIdAsync(id, ct);
+        
+        if (session == null)
+            throw new NotFoundException("Session does not exists");
+
+        _unitOfWork.Sessions.Delete(session);
+        await _unitOfWork.CompleteAsync(ct);
     }
 
-    public Task<List<SessionModel>> GetAllByDateAsync(DateTime date, CancellationToken ct = default)
+    public async Task<List<SessionModel>> GetAllByDateAsync(DateTime date, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var sessions = await _unitOfWork.Sessions.SearchAsync(new SearchContext<Session>
+        {
+            Filter = s => s.ShowTime.Day == date.Day
+        }, ct);
+        
+        return _mapper.Map<List<SessionModel>>(sessions);
     }
 
-    public Task<SessionModel> GetByMovieIdAsync(Guid movieId, CancellationToken ct = default)
+    public async Task<SessionModel> GetByMovieIdAsync(Guid movieId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var session = (await _unitOfWork.Sessions.SearchAsync(new SearchContext<Session>
+        {
+            Filter = s => s.MovieId == movieId
+        }, ct)).Results.FirstOrDefault();
+        
+        if(session == null)
+            throw new NotFoundException("Session does not exists");
+        
+        return _mapper.Map<SessionModel>(session);
     }
 }

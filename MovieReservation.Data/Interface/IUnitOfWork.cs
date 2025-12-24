@@ -14,5 +14,10 @@ public interface IUnitOfWork
     IRepository<Guid, Role> Roles { get; }
     
     Task CompleteAsync(CancellationToken ct = default );
+    
+    Task BeginTransactionAsync(CancellationToken ct = default);
+    Task CommitAsync(CancellationToken ct = default);
+    Task RollbackAsync(CancellationToken ct = default);
+    
     void Dispose();
 }

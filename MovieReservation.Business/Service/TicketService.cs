@@ -39,7 +39,6 @@ public class TicketService: ITicketService
         if (availableSeats <= 0)
             throw new BusinessException("Available seats count must be greater than zero.");
 
-        // 1. Prevent duplicate ticket generation
         var existingTicketsCount = 0;
 
         existingTicketsCount = await _unitOfWork.Tickets.GetFilteredCountAsync(
@@ -74,21 +73,96 @@ public class TicketService: ITicketService
         _unitOfWork.Tickets.AddRange(tickets);
     }
 
-    public Task ReserveTicketAsync(Guid id, Guid ticketId, CancellationToken ct = default)
+    public async Task ReserveTicketAsync(Guid userId, Guid ticketId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.BeginTransactionAsync(ct);
+
+        try
+        {
+            var ticket = await _unitOfWork.Tickets.GetByIdAsync(ticketId, ct);
+            
+            if (ticket == null)
+                throw new BusinessException("Ticket not found.");
+
+            if (ticket.TicketStatus != TicketStatusEnum.Free)
+                throw new BusinessException("Ticket is not available.");
+
+            ticket.TicketStatus = TicketStatusEnum.Reserved;
+            ticket.UserId = userId;
+
+            _unitOfWork.Tickets.Update(ticket.Id, ticket);
+            await _unitOfWork.CommitAsync(ct);
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync(ct);
+            throw;
+        }
     }
 
-    public Task PurchaseTicketAsync(Guid id, Guid ticketId, CancellationToken ct = default)
+    public async Task PurchaseTicketAsync(Guid userId, Guid ticketId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.BeginTransactionAsync(ct);
+
+        try
+        {
+            var ticket = await _unitOfWork.Tickets.GetByIdAsync(ticketId, ct);
+            
+            if (ticket == null)
+                throw new BusinessException("Ticket not found.");
+
+            if (ticket.TicketStatus == TicketStatusEnum.Purchased)
+                throw new BusinessException("Ticket already purchased.");
+
+            if (ticket.TicketStatus == TicketStatusEnum.Reserved && ticket.UserId != userId)
+                throw new BusinessException("Ticket reserved by another user.");
+
+            if (ticket.TicketStatus == TicketStatusEnum.Cancelled)
+                throw new BusinessException("Cancelled ticket cannot be purchased.");
+
+            ticket.TicketStatus = TicketStatusEnum.Purchased;
+            ticket.UserId = userId;
+
+            _unitOfWork.Tickets.Update(ticket.Id, ticket);
+            await _unitOfWork.CommitAsync(ct);
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync(ct);
+            throw;
+        }
     }
 
-    public Task CancelTicketAsync(Guid id, CancellationToken ct = default)
+    public async Task CancelTicketAsync(Guid userId,Guid ticketId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.BeginTransactionAsync(ct);
+
+        try
+        {
+            var ticket = await _unitOfWork.Tickets.GetByIdAsync(ticketId, ct);
+            if (ticket == null)
+                throw new BusinessException("Ticket not found.");
+
+            if (ticket.UserId != userId)
+                throw new BusinessException("You can cancel only your own ticket.");
+
+            if (ticket.TicketStatus == TicketStatusEnum.Cancelled)
+                throw new BusinessException("Ticket already cancelled.");
+
+            if (ticket.TicketStatus == TicketStatusEnum.Free)
+                throw new BusinessException("Free ticket cannot be cancelled.");
+
+            ticket.TicketStatus = TicketStatusEnum.Cancelled;
+
+            _unitOfWork.Tickets.Update(ticket.Id, ticket);
+            await _unitOfWork.CommitAsync(ct);
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync(ct);
+            throw;
+        }
     }
-    
     
     private static int ResolveSeatCount(AvailableSeatsEnum seats) =>
         seats switch

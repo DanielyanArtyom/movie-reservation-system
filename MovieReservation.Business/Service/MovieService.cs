@@ -23,16 +23,15 @@ public class MovieService: IMovieService
         }, ct)).Results.FirstOrDefault();
         
         if (movie != null)
-        {
             throw new DuplicateFoundException("Movie is already exists");
-        }
+        
+        if (request.Duration <= TimeSpan.Zero)
+            throw new ArgumentException("Movie duration is invalid.");
 
         var genre = await GetGenreById(request.GenreId, ct);
 
         if (genre == null)
-        {
             throw new NotFoundException("Genre not found");
-        }
         
         _unitOfWork.Movies.Add(_mapper.Map<Movie>(request));
 
